@@ -335,6 +335,8 @@ public class FTXPIPManager implements TXSimpleEventBus.EventSubscriber {
             mPlayPauseAssetPath = in.readString();
             mPlayForwardAssetPath = in.readString();
             mCurrentPlayerId = in.readInt();
+            mViewWith = in.readInt();
+            mViewHeight = in.readInt();
             mIsNeedPlayBack = in.readByte() != 0;
             mIsNeedPlayForward = in.readByte() != 0;
             mIsNeedPlayControl = in.readByte() != 0;
@@ -491,6 +493,8 @@ public class FTXPIPManager implements TXSimpleEventBus.EventSubscriber {
             dest.writeString(mPlayPauseAssetPath);
             dest.writeString(mPlayForwardAssetPath);
             dest.writeInt(mCurrentPlayerId);
+            dest.writeInt(mViewWith);
+            dest.writeInt(mViewHeight);
             dest.writeByte((byte) (mIsNeedPlayBack ? 1 : 0));
             dest.writeByte((byte) (mIsNeedPlayForward ? 1 : 0));
             dest.writeByte((byte) (mIsNeedPlayControl ? 1 : 0));
