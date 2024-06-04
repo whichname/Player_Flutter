@@ -291,6 +291,8 @@ public class FTXPIPManager implements TXSimpleEventBus.EventSubscriber {
         private float mCurrentPlayTime = 0;
         private int mViewWith = 16;
         private int mViewHeight = 9;
+        private boolean mMuted = false;
+        private int mVolume = -1;
 
         /**
          * PIP parameters.
@@ -342,6 +344,8 @@ public class FTXPIPManager implements TXSimpleEventBus.EventSubscriber {
             mIsNeedPlayControl = in.readByte() != 0;
             mIsPlaying = in.readByte() != 0;
             mCurrentPlayTime = in.readFloat();
+            mMuted = in.readByte() != 0;
+            mVolume = in.readInt();
         }
 
         public static final Creator<PipParams> CREATOR = new Creator<PipParams>() {
@@ -379,6 +383,22 @@ public class FTXPIPManager implements TXSimpleEventBus.EventSubscriber {
         public void setRadio(int width, int height) {
             mViewWith = width;
             mViewHeight = height;
+        }
+
+        public void setMuted(boolean muted) {
+            mMuted = muted;
+        }
+
+        public boolean getMuted() {
+            return mMuted;
+        }
+
+        public void setVolume(int volume) {
+            mVolume = volume;
+        }
+
+        public int getVolume() {
+            return mVolume;
         }
 
         public int geiRadioWith() {
@@ -500,6 +520,8 @@ public class FTXPIPManager implements TXSimpleEventBus.EventSubscriber {
             dest.writeByte((byte) (mIsNeedPlayControl ? 1 : 0));
             dest.writeByte((byte) (mIsPlaying ? 1 : 0));
             dest.writeFloat(mCurrentPlayTime);
+            dest.writeByte((byte) (mMuted ? 1 : 0));
+            dest.writeInt(mVolume);
         }
     }
 

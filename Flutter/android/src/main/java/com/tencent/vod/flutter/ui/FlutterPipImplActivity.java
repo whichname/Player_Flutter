@@ -139,6 +139,15 @@ public class FlutterPipImplActivity extends Activity implements Callback, ITXVod
         setVodPlayerListener();
         setLivePlayerListener();
         handleIntent(intent);
+        if(params != null) {
+            boolean muted = params.getMuted();
+            int volume = params.getVolume();
+            if(muted) {
+                mVodPlayer.setMute(true);
+            } else if(volume >= 0) {
+                mVodPlayer.setAudioPlayoutVolume(volume);
+            }
+        }
     }
 
     private void setVodPlayerListener() {

@@ -80,6 +80,9 @@ public class FTXVodPlayer extends FTXBasePlayer implements ITXVodPlayListener, F
     private boolean mEnableHardwareDecode = true;
     private boolean mHardwareDecodeFail = false;
 
+    private boolean mMuted = false;
+    private int mVolume = -1;
+
     private final FTXPIPManager mPipManager;
     private FTXPIPManager.PipParams mPipParams;
     private final FTXPIPManager.PipCallback pipCallback = new FTXPIPManager.PipCallback() {
@@ -341,12 +344,14 @@ public class FTXVodPlayer extends FTXBasePlayer implements ITXVodPlayListener, F
 
     void setPlayerMute(boolean mute) {
         if (mVodPlayer != null) {
+            mMuted = mute;
             mVodPlayer.setMute(mute);
         }
     }
 
     void setPlayerAudioPlayoutVolume(int volume) {
         if (mVodPlayer != null) {
+            mVolume = volume;
             mVodPlayer.setAudioPlayoutVolume(volume);
         }
     }
@@ -723,6 +728,8 @@ public class FTXVodPlayer extends FTXBasePlayer implements ITXVodPlayListener, F
         mPipParams.setCurrentPlayTime(getPlayerCurrentPlaybackTime());
         if (null != mVodPlayer) {
             mPipParams.setRadio(mVodPlayer.getWidth(), mVodPlayer.getHeight());
+            mPipParams.setMuted(mMuted);
+            mPipParams.setVolume(mVolume);
         }
         int pipResult = mPipManager.enterPip(mPipParams, mVideoModel);
         // After successful startup, pause the current interface video.
