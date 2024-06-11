@@ -84,6 +84,8 @@ public class FlutterPipImplActivity extends Activity implements Callback, ITXVod
     private Handler mMainHandler;
     private boolean mIsPipFinishing = false;
 
+    private float mCurrentTime = 0f;
+
     private final BroadcastReceiver pipActionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -263,7 +265,10 @@ public class FlutterPipImplActivity extends Activity implements Callback, ITXVod
         Bundle data = new Bundle();
         TXPipResult pipResult = new TXPipResult();
         if (mVideoModel.getPlayerType() == FTXEvent.PLAYER_VOD) {
-            Float currentPlayTime = mVodPlayer.getCurrentPlaybackTime();
+            float currentPlayTime = mVodPlayer.getCurrentPlaybackTime();
+            if(currentPlayTime == 0) {
+                currentPlayTime = mCurrentTime;
+            }
             pipResult.setPlayTime(currentPlayTime);
             pipResult.setPlaying(mVodPlayer.isPlaying());
             pipResult.setPlayerId(mCurrentParams.getCurrentPlayerId());
@@ -433,6 +438,7 @@ public class FlutterPipImplActivity extends Activity implements Callback, ITXVod
     @Override
     protected void onStop() {
         super.onStop();
+        mCurrentTime = mVodPlayer.getCurrentPlaybackTime();
         mVodPlayer.stopPlay(true);
         mLivePlayer.stopPlay(true);
         mIsNeedToStop = true;
